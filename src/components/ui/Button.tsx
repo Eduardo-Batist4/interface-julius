@@ -15,7 +15,9 @@ function Button({
   type = "button",
   disabled = false,
 }: ButtonProps) {
-  const defaultStyleButton = "w-64 py-3 bg-lime mt-10 text-text-main";
+  const defaultStyleButton = `w-64 py-3 bg-lime mt-10 text-text-main rounded-sm 
+    cursor-pointer font-bold hover:bg-dark hover:text-white  transition duration-300 ease-in-out
+    `;
 
   const combinedClassName = `${defaultStyleButton} ${className || ""}`;
 
