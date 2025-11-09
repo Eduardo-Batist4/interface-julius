@@ -4,7 +4,7 @@ interface InputProps {
 }
 
 function Input({ type, className }: InputProps) {
-  const defaultStyleInput = "w-full h-10 bg-input-bg rounded-sm px-3";
+  const defaultStyleInput = "w-full h-10 bg-white rounded-sm px-3";
 
   const combinedClassName = `${defaultStyleInput} ${className || ""}`;
 
