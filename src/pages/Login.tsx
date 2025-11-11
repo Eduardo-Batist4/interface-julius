@@ -4,6 +4,7 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import axios from "axios";
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import toast from "react-hot-toast";
 
 interface loginPayload {
   email: string;
@@ -37,12 +38,14 @@ function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasLoginError, setHasLoginError] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setHasLoginError(false);
 
     if (!email || !password) {
-      alert("Please enter both email and password.");
+      toast.error("Por favor, preencha todos os campos!");
       return;
     }
 
@@ -55,12 +58,12 @@ function Login() {
     setIsLoading(false);
     setEmail("");
     setPassword("");
-
     if (result) {
       console.log("Token received:", result.token);
-      alert("Login bem-sucedido!");
+      toast.success("Login feito com sucesso!");
     } else {
-      alert("Falha no login. Tente novamente.");
+      setHasLoginError(true);
+      toast.error("Email ou Senha incorreto!");
     }
   };
 
@@ -81,9 +84,13 @@ function Login() {
           <Input
             type={"email"}
             value={email}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setEmail(e.target.value);
+              if (hasLoginError) {
+                setHasLoginError(false);
+              }
+            }}
+            isInvalid={hasLoginError}
           />
         </div>
         <div className="w-full mt-5">
@@ -94,9 +101,13 @@ function Login() {
             type={"password"}
             value={password}
             className="mb-3"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setPassword(e.target.value);
+              if (hasLoginError) {
+                setHasLoginError(false);
+              }
+            }}
+            isInvalid={hasLoginError}
           />
           <Link to={""} className="text-white hover:text-second-text">
             Esqueceu a senha?
