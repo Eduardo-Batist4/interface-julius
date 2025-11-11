@@ -1,0 +1,121 @@
+import { Link } from "react-router-dom";
+import logo from "../assets/jj-logo.png";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
+import axios from "axios";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+
+interface loginPayload {
+  email: string;
+  password: string;
+}
+
+interface loginRes {
+  token: string;
+}
+
+const loginReq = async (data: loginPayload): Promise<loginRes | void> => {
+  try {
+    const response = await axios.post<loginRes>(
+      "http://localhost:8080/api/login",
+      data
+    );
+
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Login failed:", error.response?.data || error.message);
+    } else {
+      console.error("An unknown error occurred:", error);
+    }
+  }
+};
+
+function Login() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      alert("Please enter both email and password.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    const payload: loginPayload = { email, password };
+
+    const result = await loginReq(payload);
+
+    setIsLoading(false);
+    setEmail("");
+    setPassword("");
+
+    if (result) {
+      console.log("Token received:", result.token);
+      alert("Login bem-sucedido!");
+    } else {
+      alert("Falha no login. Tente novamente.");
+    }
+  };
+
+  return (
+    <div className="w-120 h-auto bg-second px-5 py-18 rounded-sm">
+      <div className="flex flex-col items-center">
+        <img src={logo} alt="logo" className="w-24" />
+        <p className="mt-5 text-white">Seu assistente financeiro!</p>
+      </div>
+      <form
+        onSubmit={handleSubmit}
+        className="w-[80%] mx-auto flex flex-col items-center mt-8"
+      >
+        <div className="w-full">
+          <label htmlFor="email" className="text-white">
+            Email
+          </label>
+          <Input
+            type={"email"}
+            value={email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+          />
+        </div>
+        <div className="w-full mt-5">
+          <label htmlFor="password" className="text-white">
+            Senha
+          </label>
+          <Input
+            type={"password"}
+            value={password}
+            className="mb-3"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+          />
+          <Link to={""} className="text-white hover:text-second-text">
+            Esqueceu a senha?
+          </Link>
+        </div>
+        <Button
+          name={isLoading ? "Carregando..." : "Login"}
+          type="submit"
+          disabled={isLoading}
+        />
+      </form>
+      <div className="mt-8 flex justify-center">
+        <p className="text-white mr-2">Não tem uma conta?</p>
+        <Link to={""} className="underline text-kiwi hover:text-second-text">
+          Sing in
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
