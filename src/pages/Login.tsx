@@ -6,18 +6,18 @@ import axios from "axios";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
 
-interface loginPayload {
+interface LoginPayload {
   email: string;
   password: string;
 }
 
-interface loginRes {
+interface LoginRes {
   token: string;
 }
 
-const loginReq = async (data: loginPayload): Promise<loginRes | void> => {
+const loginReq = async (data: LoginPayload): Promise<LoginRes | void> => {
   try {
-    const response = await axios.post<loginRes>(
+    const response = await axios.post<LoginRes>(
       "http://localhost:8080/api/login",
       data
     );
@@ -51,7 +51,7 @@ function Login() {
 
     setIsLoading(true);
 
-    const payload: loginPayload = { email, password };
+    const payload: LoginPayload = { email, password };
 
     const result = await loginReq(payload);
 
@@ -114,15 +114,18 @@ function Login() {
           </Link>
         </div>
         <Button
-          name={isLoading ? "Carregando..." : "Login"}
+          name={isLoading ? "Carregando..." : "Entrar"}
           type="submit"
           disabled={isLoading}
         />
       </form>
       <div className="mt-8 flex justify-center">
         <p className="text-white mr-2">Não tem uma conta?</p>
-        <Link to={""} className="underline text-kiwi hover:text-second-text">
-          Sing in
+        <Link
+          to={"/singin"}
+          className="underline text-kiwi hover:text-second-text"
+        >
+          Sign up
         </Link>
       </div>
     </div>

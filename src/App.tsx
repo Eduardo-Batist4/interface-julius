@@ -1,5 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
+import { Route, Routes } from "react-router-dom";
+import Singin from "./pages/Signup";
 
 function App() {
   return (
@@ -28,8 +30,11 @@ function App() {
           },
         }}
       />
-      <div className="w-[30%] h-auto p-5">
-        <Login />
+      <div className="w-[80%] h-auto p-5 flex justify-center">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/singin" element={<Singin />} />
+        </Routes>
       </div>
     </main>
   );
