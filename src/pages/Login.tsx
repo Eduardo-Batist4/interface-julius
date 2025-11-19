@@ -45,7 +45,7 @@ function Login() {
     setHasLoginError(false);
 
     if (!email || !password) {
-      toast.error("Por favor, preencha todos os campos!");
+      toast.error("Please fill in all fields!");
       return;
     }
 
@@ -60,10 +60,10 @@ function Login() {
     setPassword("");
     if (result) {
       console.log("Token received:", result.token);
-      toast.success("Login feito com sucesso!");
+      toast.success("Successful Login!");
     } else {
       setHasLoginError(true);
-      toast.error("Email ou Senha incorreto!");
+      toast.error("Invalid email or password!");
     }
   };
 

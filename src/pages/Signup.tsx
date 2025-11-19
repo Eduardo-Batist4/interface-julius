@@ -4,6 +4,7 @@ import Input from "../components/ui/Input";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import IconTip from "../components/ui/IconTIp";
 
 interface SignupPayload {
   name: string;
@@ -36,6 +37,7 @@ const handleAuthRequest = async (
       const errorMessages: string[] = [];
 
       if (errorData && errorData.errors) {
+        console.log(errorData.errors);
         for (const field in errorData.errors) {
           const fieldErrors = errorData.errors[field];
 
@@ -62,7 +64,8 @@ function Signup() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [password_confirmation, setPasswordConfirmation] = useState<string>("");
+  const [password_confirmation, setPassword_Confirmation] =
+    useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasLoginError, setHasLoginError] = useState<boolean>(false);
 
@@ -70,7 +73,7 @@ function Signup() {
     e.preventDefault();
 
     if (!name || !email || !password || !password_confirmation) {
-      toast.error("Please, Fill in all the fields.!");
+      toast.error("Please, Fill in all the fields!");
       return;
     }
 
@@ -86,13 +89,13 @@ function Signup() {
     const res = await handleAuthRequest(payload);
 
     setIsLoading(false);
-    // setEmail("");
-    // setName("");
-    // setPassword("");
-    // setConfirmPassword("");
+    setEmail("");
+    setName("");
+    setPassword("");
+    setPassword_Confirmation("");
     if (typeof res === "object" && res !== null && "token" in res) {
       console.log("Token received:", res.token);
-      toast.success("Successful Login!");
+      toast.success("Successful Register!");
     } else if (Array.isArray(res)) {
       res.forEach((errorMessage) => {
         toast.error(errorMessage, {
@@ -146,9 +149,12 @@ function Signup() {
             />
           </div>
           <div className="w-full mt-3">
-            <label htmlFor="password" className="text-white">
-              Senha
-            </label>
+            <div className="flex justify-between">
+              <label htmlFor="password" className="text-white">
+                Senha
+              </label>
+              <IconTip />
+            </div>
             <Input
               type={"password"}
               value={password}
@@ -169,7 +175,7 @@ function Signup() {
               type={"password"}
               value={password_confirmation}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setPasswordConfirmation(e.target.value);
+                setPassword_Confirmation(e.target.value);
                 if (hasLoginError) {
                   setHasLoginError(false);
                 }
