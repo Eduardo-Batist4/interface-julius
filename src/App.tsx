@@ -2,6 +2,7 @@ import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
 import { Route, Routes } from "react-router-dom";
 import Singin from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -30,10 +31,11 @@ function App() {
           },
         }}
       />
-      <div className="w-[80%] h-auto p-5 flex justify-center">
+      <div className="w-full h-auto flex justify-center">
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/singin" element={<Singin />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>
     </main>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/jj-logo.png";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
@@ -22,8 +22,6 @@ const loginReq = async (data: LoginPayload): Promise<LoginRes | void> => {
       data
     );
 
-    console.log(response);
-
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -39,6 +37,7 @@ function Login() {
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasLoginError, setHasLoginError] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -61,6 +60,7 @@ function Login() {
     if (result) {
       console.log("Token received:", result.token);
       toast.success("Successful Login!");
+      navigate("/dashboard");
     } else {
       setHasLoginError(true);
       toast.error("Invalid email or password!");
