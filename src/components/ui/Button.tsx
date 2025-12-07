@@ -1,8 +1,10 @@
-import type { MouseEventHandler } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 
 interface ButtonProps {
-  name: string;
+  name: string | ReactNode;
   className?: string;
+  width?: string;
+  height?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
@@ -11,15 +13,19 @@ interface ButtonProps {
 function Button({
   name,
   className,
+  width = "w-64",
+  height = "h-12",
   onClick,
   type = "button",
   disabled = false,
 }: ButtonProps) {
-  const defaultStyleButton = `w-64 py-3 bg-kiwi mt-5 text-black rounded-sm 
+  const defaultStyleButton = `bg-kiwi text-black rounded-sm 
     cursor-pointer font-bold hover:bg-input-bg hover:text-kiwi  transition duration-300 ease-in-out
     `;
 
-  const combinedClassName = `${defaultStyleButton} ${className || ""}`;
+  const combinedClassName = `${defaultStyleButton} ${width} ${height} ${
+    className || ""
+  }`;
 
   return (
     <button
