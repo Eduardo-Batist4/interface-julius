@@ -3,6 +3,7 @@ import type { ChangeEvent, InputHTMLAttributes } from "react";
 interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "value"> {
   type: string;
+  placeholder?: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
@@ -11,6 +12,7 @@ interface InputProps
 
 function Input({
   type,
+  placeholder,
   value,
   className,
   onChange,
@@ -30,6 +32,7 @@ function Input({
   return (
     <input
       type={type}
+      placeholder={placeholder}
       className={combinedClassName}
       value={value}
       onChange={onChange}
