@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <main className="w-full h-screen bg-black flex justify-center items-center">
+    <main className="w-full min-h-screen bg-black flex justify-center items-center">
       <Toaster
         position="bottom-right"
         reverseOrder={false}
