@@ -37,7 +37,6 @@ const handleAuthRequest = async (
       const errorMessages: string[] = [];
 
       if (errorData && errorData.errors) {
-        console.log(errorData.errors);
         for (const field in errorData.errors) {
           const fieldErrors = errorData.errors[field];
 
@@ -94,7 +93,6 @@ function Signup() {
     setPassword("");
     setPassword_Confirmation("");
     if (typeof res === "object" && res !== null && "token" in res) {
-      console.log("Token received:", res.token);
       toast.success("Successful Register!");
     } else if (Array.isArray(res)) {
       res.forEach((errorMessage) => {
@@ -186,6 +184,7 @@ function Signup() {
           <Button
             name={isLoading ? "Carregando..." : "Criar"}
             type="submit"
+            className="mt-5"
             disabled={isLoading}
           />
         </form>

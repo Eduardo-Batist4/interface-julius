@@ -58,7 +58,6 @@ function Login() {
     setEmail("");
     setPassword("");
     if (result) {
-      console.log("Token received:", result.token);
       toast.success("Successful Login!");
       navigate("/dashboard");
     } else {
@@ -115,6 +114,7 @@ function Login() {
         </div>
         <Button
           name={isLoading ? "Carregando..." : "Entrar"}
+          className="mt-5"
           type="submit"
           disabled={isLoading}
         />
