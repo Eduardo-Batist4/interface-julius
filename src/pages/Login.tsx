@@ -2,35 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/jj-logo.png";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
-import axios from "axios";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 interface LoginPayload {
   email: string;
   password: string;
 }
-
-interface LoginRes {
-  token: string;
-}
-
-const loginReq = async (data: LoginPayload): Promise<LoginRes | void> => {
-  try {
-    const response = await axios.post<LoginRes>(
-      "http://localhost:8080/api/login",
-      data
-    );
-
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Login failed:", error.response?.data || error.message);
-    } else {
-      console.error("An unknown error occurred:", error);
-    }
-  }
-};
 
 function Login() {
   const [email, setEmail] = useState<string>("");
@@ -38,6 +17,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasLoginError, setHasLoginError] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -48,20 +28,17 @@ function Login() {
       return;
     }
 
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    const payload: LoginPayload = { email, password };
+      const payload: LoginPayload = { email, password };
 
-    const result = await loginReq(payload);
-
-    setIsLoading(false);
-    setEmail("");
-    setPassword("");
-    if (result) {
+      await login(payload);
       toast.success("Successful Login!");
       navigate("/dashboard");
-    } else {
+    } catch (error) {
       setHasLoginError(true);
+      console.error(error);
       toast.error("Invalid email or password!");
     }
   };
